@@ -10,5 +10,7 @@ public class GroupFunctionRepository {
 
     public long countMenuOfCategory(int categoryCode) {
         String jpql = "SELECT COUNT(m.menuCode) FROM Section05Menu m WHERE m.categoryCode = :categoryCode";
+
+        
     }
 }
