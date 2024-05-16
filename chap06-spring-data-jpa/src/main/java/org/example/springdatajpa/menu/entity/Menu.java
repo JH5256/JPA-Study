@@ -24,4 +24,8 @@ public class Menu {
     private String orderableStatus;
 
 
+    public void modifyMenuName(String menuName) {
+
+        this.menuName = menuName;
+    }
 }

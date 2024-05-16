@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -81,6 +82,47 @@ public class MenuService {
         return categoryList.stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))
                 .toList();
+    }
+
+
+    /* 6. Save */
+    @Transactional
+    public void registMenu(MenuDTO menuDTO) {
+
+        menuRepository.save(modelMapper.map(menuDTO, Menu.class));
+
+
+        /* 여러개를 저장해야 할떄 */
+//        menuRepository.saveAll()
+    }
+
+
+    /* 7.  수정 (엔티티 객체 필드값 변경) */
+    @Transactional
+    public void modifyMenu(MenuDTO menuDTO) {
+
+
+        Menu foundMenu = menuRepository.findById(menuDTO.getMenuCode())
+                .orElseThrow(IllegalArgumentException::new);
+        /* .orElseThrow = 찾지 못했을 경우 를 생각해서 작성해줘야 함 */
+
+
+        /* setter 사용 (지양)
+         * 이름 수정 메서드를 정의하여 사용 */
+        foundMenu.modifyMenuName(menuDTO.getMenuName());
+
+
+        /* 메소드가 종료 되면 변경 감지를 통해 업데이트 구문이 작동 됨 */
+
+    }
+
+    /* 8. deleteById */
+
+    @Transactional
+    public void deleteMenu(Integer menuCode) {
+
+        /* 메뉴 코드를 전달 해서 삭제 */
+        menuRepository.deleteById(menuCode);
     }
 
 }
